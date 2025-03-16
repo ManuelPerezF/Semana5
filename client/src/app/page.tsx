@@ -1,35 +1,15 @@
 'use client';
 import { useState } from 'react';
+import { useCalculate } from './components/useCalculate';
 
 export default function Page() {
   const [num1, setNum1] = useState('');
   const [num2, setNum2] = useState('');
   const [operation, setOperation] = useState('sum');
-  const [result, setResult] = useState('');
+  const { result, calculate, error, loading } = useCalculate();
 
   const handleCalculate = () => {
-    const number1 = parseFloat(num1);
-    const number2 = parseFloat(num2);
-    let res = 0;
-
-    switch (operation) {
-      case 'sum':
-        res = number1 + number2;
-        break;
-      case 'subtract':
-        res = number1 - number2;
-        break;
-      case 'multiply':
-        res = number1 * number2;
-        break;
-      case 'divide':
-        res = number1 / number2;
-        break;
-      default:
-        break;
-    }
-
-    setResult(`Resultado: ${res}`);
+    calculate(num1, num2, operation);
   };
 
   return (
@@ -67,11 +47,13 @@ export default function Page() {
       <button
         onClick={handleCalculate}
         className="bg-green-500 rounded-md px-4 py-2 mt-4 text-white font-semibold"
+        disabled={loading}
       >
-        Calcular
+        {loading ? 'Calculando...' : 'Calcular'}
       </button>
 
-      {result && <div className="mt-4 text-white">{result}</div>}
+      {error && <div className="mt-4 text-red-500">{error}</div>}
+      {result !== null && <div className="mt-4 text-white">Resultado: {result}</div>}
     </div>
   );
 }

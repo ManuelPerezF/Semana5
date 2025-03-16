@@ -1,9 +1,10 @@
+
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
-app.get('/', (req, res) => {
-    res.json({message: 'Welcome to the API!'});
-});
+app.use(cors());
+
 
 app.get('/operaciones', (req, res) => {
     const { num1, num2, operation } = req.query;
@@ -27,10 +28,10 @@ app.get('/operaciones', (req, res) => {
         default:
             return res.status(400).json({ error: 'Invalid operation' });
     }
-
+    
     res.json({ result });
 });
 
-app.listen(8000, () => {
-    console.log('Server running on port 8000');
+app.listen(3001, () => {
+    console.log('Server running on port 3001');
 });
